@@ -173,16 +173,17 @@ class _HomeViewState extends State<HomeView> {
       width: MediaQuery.of(context).size.width / 4.5,
       height: MediaQuery.of(context).size.height * 0.7,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
             card.type == CardType.DO
                 ? 'assets/images/hand_console.png'
                 : 'assets/images/dual_beer.png',
-            width: MediaQuery.of(context).size.width * 0.25,
-            height: MediaQuery.of(context).size.height * 0.25,
+            width: MediaQuery.of(context).size.width * 0.15,
+            height: MediaQuery.of(context).size.height * 0.2,
             fit: BoxFit.contain,
           ),
+          const Spacer(),
           Expanded(
             child: Text(
               card.detail,
@@ -192,6 +193,7 @@ class _HomeViewState extends State<HomeView> {
               textAlign: TextAlign.center,
             ),
           ),
+          const Spacer(),
           Expanded(
             child: Text(
               card.title,
