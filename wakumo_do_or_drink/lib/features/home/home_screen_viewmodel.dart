@@ -30,7 +30,10 @@ class HomeScreenViewModel extends GetxController {
 
   void initAnimation() {
     //remove assets/ when debug, add it when deploy
-    rootBundle.load('assets/rive/shock_deer_animation.riv').then((bytes) {
+    rootBundle
+        .load('rive/shock_deer_animation.riv')
+        // .load('assets/rive/shock_deer_animation.riv')
+        .then((bytes) {
       final artBoard = RiveFile.import(bytes).mainArtboard;
       // artBoard.addController(shake);
       riveArtBoard = artBoard;
@@ -128,7 +131,8 @@ class HomeScreenViewModel extends GetxController {
       var listNewCard = [];
       //remove assets/ when debug, add it when deploy
       await rootBundle
-          .loadString('assets/default_card/default_card.json')
+          // .loadString('assets/default_card/default_card.json')
+          .loadString('default_card/default_card.json')
           .then((response) async {
         final data = await json.decode(response);
         for (var rawCard in data) {

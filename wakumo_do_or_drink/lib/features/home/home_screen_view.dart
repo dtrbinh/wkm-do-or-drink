@@ -107,8 +107,8 @@ class _HomeViewState extends State<HomeView> {
                             viewModel.resetCards();
                           },
                           child: Container(
-                            width: 60,
-                            height: 60,
+                            width: MediaQuery.of(context).size.width * 0.05,
+                            height: MediaQuery.of(context).size.width * 0.05,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(color: AppColors.GREEN)),
@@ -130,8 +130,8 @@ class _HomeViewState extends State<HomeView> {
                           viewModel.startDrawClick();
                         },
                         child: Container(
-                          width: 179,
-                          height: 64,
+                          width: MediaQuery.of(context).size.width * 0.15,
+                          height: MediaQuery.of(context).size.height * 0.1,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               color: viewModel.isShaking.value ||
@@ -152,7 +152,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     Image.asset(
                       "assets/images/wakumo_logo.png",
-                      width: 171,
+                      width: MediaQuery.of(context).size.width * 0.15,
                       fit: BoxFit.fitWidth,
                     ),
                   ],
@@ -171,7 +171,7 @@ class _HomeViewState extends State<HomeView> {
     if (card.id == 0) return const SizedBox.shrink();
     return SizedBox(
       width: MediaQuery.of(context).size.width / 4.5,
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 0.7,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -179,23 +179,27 @@ class _HomeViewState extends State<HomeView> {
             card.type == CardType.DO
                 ? 'assets/images/hand_console.png'
                 : 'assets/images/dual_beer.png',
-            width: 196,
-            height: 120,
+            width: MediaQuery.of(context).size.width * 0.25,
+            height: MediaQuery.of(context).size.height * 0.25,
             fit: BoxFit.contain,
           ),
-          Text(
-            card.detail,
-            maxLines: 5,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+          Expanded(
+            child: Text(
+              card.detail,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
           ),
-          Text(
-            card.title,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 20),
-            textAlign: TextAlign.center,
+          Expanded(
+            child: Text(
+              card.title,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),

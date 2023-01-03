@@ -10,7 +10,7 @@ class DoOrDrinkApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'DO OR DRINK',
+      title: 'WAKUMO NEW YEAR PARTY 2023',
       theme: ThemeData(
         primarySwatch: Colors.green,
         brightness: Brightness.light,
