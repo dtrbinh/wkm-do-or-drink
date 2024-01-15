@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -184,22 +185,24 @@ class _HomeViewState extends State<HomeView> {
             fit: BoxFit.contain,
           ),
           const Spacer(),
-          Expanded(
+          Container(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
             child: Text(
               card.detail,
-              maxLines: 5,
+              maxLines: 4,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: GoogleFonts.lobster(fontSize: 24),
               textAlign: TextAlign.center,
             ),
           ),
           const Spacer(),
-          Expanded(
+          Container(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
             child: Text(
               card.title,
-              maxLines: 4,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 20),
+              style: GoogleFonts.lobster(fontSize: 20),
               textAlign: TextAlign.center,
             ),
           ),
