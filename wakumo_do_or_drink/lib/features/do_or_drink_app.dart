@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wakumo_do_or_drink/features/home/home_screen_view.dart';
+import '2024/game/game_view.dart';
 
 class DoOrDrinkApp extends StatelessWidget {
   const DoOrDrinkApp({super.key});
@@ -10,14 +10,14 @@ class DoOrDrinkApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'DO OR DRINK',
+      title: 'WAKUMO NEW YEAR PARTY 2023',
       theme: ThemeData(
         primarySwatch: Colors.green,
         brightness: Brightness.light,
-        fontFamily: 'Nunito',
+        fontFamily: 'Lobster',
         useMaterial3: true,
       ),
-      home: const HomeView(title: 'DO OR DRINK'),
+      home: const GameView(),
     );
   }
 }
