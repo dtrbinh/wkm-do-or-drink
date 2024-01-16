@@ -2,12 +2,17 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 import 'package:wakumo_do_or_drink/data/model/PlayCard.dart';
+import 'package:wakumo_do_or_drink/utils/AppLoading.dart';
 
 class HomeScreenViewModel extends GetxController {
+  final animationSource = !kDebugMode ? 'assets/rive/shock_deer_animation.riv' : 'rive/shock_deer_animation.riv';
+  final cardSource = !kDebugMode ? 'assets/default_card/default_card.json' : 'default_card/default_card.json';
+
   var listPlayingCard = [].obs;
   var listPlayedCard = [].obs;
 
@@ -28,25 +33,27 @@ class HomeScreenViewModel extends GetxController {
 
   PlayCard? get currentCard => cardResult;
 
-  void initAnimation() {
-    //remove assets/ when debug, add it when deploy
-    rootBundle
-        // .load('rive/shock_deer_animation.riv')
-        .load('assets/rive/shock_deer_animation.riv')
-        .then((bytes) {
-      final artBoard = RiveFile.import(bytes).mainArtboard;
-      // artBoard.addController(shake);
-      riveArtBoard = artBoard;
-      isLoading.value = false;
-      update();
-      initData();
-    });
+  void initAnimation(Function(bool) onDone) async {
+    try {
+      rootBundle.load(animationSource).then((bytes) async {
+        final artBoard = RiveFile.import(bytes).mainArtboard;
+        riveArtBoard = artBoard;
+        isLoading.value = false;
+        update();
+        await initCardData();
+        onDone(true);
+      });
+    } catch (e) {
+      debugPrint("Init animation error: ${e.toString()}");
+      onDone(false);
+    }
   }
 
-  void initData() async {
-    await getSourceCard().then((value) => getPlayingCard());
+  Future<void> initCardData() async {
+    await loadSourceCard().then((value) => getPlayingCard());
   }
 
+  // region control animation
   void shakeCard() {
     // debugPrint("shake card");
     removeAllAnimation();
@@ -100,11 +107,7 @@ class HomeScreenViewModel extends GetxController {
       });
     } else {
       debugPrint("Out of Card");
-      cardResult = PlayCard(
-          id: -1,
-          type: CardType.DO,
-          title: 'Please reset game!',
-          detail: 'No any card available');
+      cardResult = PlayCard(id: -1, type: CardType.DO, title: 'Please reset game!', detail: 'No any card available');
       update();
     }
   }
@@ -124,16 +127,13 @@ class HomeScreenViewModel extends GetxController {
       clearData();
     }
   }
+  // endregion
 
   ///--------logic
-  Future<void> getSourceCard() async {
+  Future<void> loadSourceCard() async {
     try {
       var listNewCard = [];
-      //remove assets/ when debug, add it when deploy
-      await rootBundle
-          .loadString('assets/default_card/default_card.json')
-          // .loadString('default_card/default_card.json')
-          .then((response) async {
+      await rootBundle.loadString(cardSource).then((response) async {
         final data = await json.decode(response);
         for (var rawCard in data) {
           var card = PlayCard.fromJson(rawCard);
@@ -141,7 +141,7 @@ class HomeScreenViewModel extends GetxController {
         }
         listSourceCard.value.clear();
         listSourceCard.value.addAll(listNewCard);
-        debugPrint('Get success: ${listSourceCard.value.length} cards');
+        debugPrint('Get default card success: ${listSourceCard.value.length} cards');
         update();
       });
     } catch (e) {
@@ -151,7 +151,7 @@ class HomeScreenViewModel extends GetxController {
 
   void getPlayingCard({bool refreshSourceCard = false}) {
     if (refreshSourceCard) {
-      getSourceCard();
+      loadSourceCard();
     }
     listPlayingCard.value.addAll(listSourceCard.value);
     isLoading.value = false;
@@ -177,8 +177,7 @@ class HomeScreenViewModel extends GetxController {
     listPlayedCard.value.clear();
     listPlayingCard.value.clear();
     update();
-    debugPrint(
-        '${listPlayingCard.value.length} - ${listPlayedCard.value.length}');
+    debugPrint('${listPlayingCard.value.length} - ${listPlayedCard.value.length}');
     getPlayingCard();
     update();
     Get.showSnackbar(GetBar(

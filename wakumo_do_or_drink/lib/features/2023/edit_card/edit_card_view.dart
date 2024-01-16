@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakumo_do_or_drink/data/model/PlayCard.dart';
-import 'package:wakumo_do_or_drink/features/edit_card/edit_card_viewmodel.dart';
 import 'package:wakumo_do_or_drink/utils/AppColors.dart';
+
+import 'edit_card_viewmodel.dart';
 
 class EditCardView extends StatefulWidget {
   const EditCardView({Key? key}) : super(key: key);

@@ -3,14 +3,14 @@ import 'package:rive/rive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wakumo_do_or_drink/data/model/PlayCard.dart';
-import 'package:wakumo_do_or_drink/features/edit_card/edit_card_view.dart';
-import 'package:wakumo_do_or_drink/features/home/home_screen_viewmodel.dart';
+import 'package:wakumo_do_or_drink/features/2023/home/home_screen_viewmodel.dart';
 import 'package:wakumo_do_or_drink/utils/AppColors.dart';
+import 'package:wakumo_do_or_drink/utils/AppLoading.dart';
+
+import '../edit_card/edit_card_view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key, required this.title});
-
-  final String title;
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -18,26 +18,31 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final viewModel = Get.put(HomeScreenViewModel());
+  bool isShowAppBar = false;
 
   @override
   void initState() {
     super.initState();
-    viewModel.initAnimation();
+    viewModel.initAnimation((isDone){
+      if (!isDone){
+        AppLoading().showInternalError();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: AppColors.GREEN,
-      //   iconTheme: const IconThemeData(color: Colors.white),
-      //   title: Text(
-      //     widget.title,
-      //     style: TextStyle(
-      //         color: context.theme.scaffoldBackgroundColor,
-      //         fontWeight: FontWeight.bold),
-      //   ),
-      // ),
+      appBar: isShowAppBar ? AppBar(
+        backgroundColor: AppColors.GREEN,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(
+          "WAKUMO NEW YEAR PARTY 2023",
+          style: TextStyle(
+              color: context.theme.scaffoldBackgroundColor,
+              fontWeight: FontWeight.bold),
+        ),
+      ) : null,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -47,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(
-                'assets/images/img_new_year.png',
+                'assets/images/background_2023.png',
                 height: MediaQuery.of(context).size.height,
                 fit: BoxFit.fitHeight,
               ),
@@ -163,8 +168,7 @@ class _HomeViewState extends State<HomeView> {
           );
         }),
       ),
-      drawer:
-          _drawer(), // This trailing comma makes auto-formatting nicer for build methods.
+      drawer: _drawer(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -211,6 +215,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  // hidden part
   Widget _drawer() {
     return Container(
       width: MediaQuery.of(context).size.width / 5,
