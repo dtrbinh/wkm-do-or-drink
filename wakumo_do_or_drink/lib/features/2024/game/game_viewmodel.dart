@@ -9,7 +9,7 @@ import 'package:wakumo_do_or_drink/data/model/PlayCard.dart';
 
 class GameViewModel extends GetxController {
   final animationSource = !kDebugMode ? 'assets/rive/shock_deer_animation.riv' : 'rive/shock_deer_animation.riv';
-  final cardSource = !kDebugMode ? 'assets/default_card/default_card.json' : 'default_card/default_card.json';
+  final cardSource = !kDebugMode ? 'assets/default_card/cards_2024.json' : 'assets/default_card/cards_2024.json';
 
 
   PlayCard? cardResult;
@@ -67,7 +67,7 @@ class GameViewModel extends GetxController {
   }
 
   void startRandom() {
-    if (listPlayingCard.value.isNotEmpty) {
+    if (listPlayingCard.isNotEmpty) {
       getRandomCard();
       isDrawing.value = false;
       isCardOpened.value = true;
@@ -97,6 +97,7 @@ class GameViewModel extends GetxController {
   ///--------logic
   Future<void> loadSourceCard() async {
     try {
+      debugPrint("Card source: $cardSource");
       await rootBundle.loadString(cardSource).then((response) async {
         final List data = await json.decode(response);
         final listNewCard = data.map((cardJson) => PlayCard.fromJson(cardJson)).toList();
@@ -121,14 +122,14 @@ class GameViewModel extends GetxController {
   }
 
   void playedACard(PlayCard a) {
-    listPlayingCard.value.remove(a);
-    listPlayedCard.value.add(a);
+    listPlayingCard.remove(a);
+    listPlayedCard.add(a);
     update();
   }
 
   void playedACardAt(int index) {
-    listPlayedCard.value.add(listPlayingCard[index]);
-    listPlayingCard.value.removeAt(index);
+    listPlayedCard.add(listPlayingCard[index]);
+    listPlayingCard.removeAt(index);
     update();
   }
 
@@ -136,28 +137,28 @@ class GameViewModel extends GetxController {
     isLoading.value = false;
     isDrawing.value = false;
     isCardOpened.value = false;
-    listPlayedCard.value.clear();
-    listPlayingCard.value.clear();
+    listPlayedCard.clear();
+    listPlayingCard.clear();
     update();
-    debugPrint('${listPlayingCard.value.length} - ${listPlayedCard.value.length}');
+    debugPrint('${listPlayingCard.length} - ${listPlayedCard.length}');
     getPlayingCard(refreshSourceCard: true);
     update();
-    Get.showSnackbar(GetBar(
+    Get.showSnackbar(const GetSnackBar(
       message: "Completed!",
-      duration: const Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 800),
     ));
   }
 
   void getRandomCard() {
-    int randomIndex = Random().nextInt(listPlayingCard.value.length);
-    var randomCard = listPlayingCard.value[randomIndex];
+    int randomIndex = Random().nextInt(listPlayingCard.length);
+    var randomCard = listPlayingCard[randomIndex];
     playedACardAt(randomIndex);
     cardResult = randomCard;
     isCardOpened.value = true;
     debugPrint("Card: ${cardResult!.title}");
-    debugPrint('Source Card: ${listSourceCard.value.length.toString()}');
-    debugPrint('Played Card: ${listPlayedCard.value.length.toString()}');
-    debugPrint('Available Card: ${listPlayingCard.value.length.toString()}');
+    debugPrint('Source Card: ${listSourceCard.length.toString()}');
+    debugPrint('Played Card: ${listPlayedCard.length.toString()}');
+    debugPrint('Available Card: ${listPlayingCard.length.toString()}');
     update();
   }
 }
