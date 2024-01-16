@@ -8,9 +8,7 @@ import 'package:get/get.dart';
 import 'package:wakumo_do_or_drink/data/model/PlayCard.dart';
 
 class GameViewModel extends GetxController {
-  final animationSource = !kDebugMode ? 'assets/rive/shock_deer_animation.riv' : 'rive/shock_deer_animation.riv';
-  final cardSource = !kDebugMode ? 'assets/default_card/cards_2024.json' : 'assets/default_card/cards_2024.json';
-
+  final cardSource = !kDebugMode ? 'assets/default_card/cards_2024.json' : 'default_card/cards_2024.json';
 
   PlayCard? cardResult;
 

@@ -17,5 +17,5 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Commands
 - Build web: `fvm flutter build web --release --web-renderer canvaskit`
-- Deploy: `firebase deploy --only hosting`
+- Deploy: `firebase deploy`
 - Preview: `firebase serve --only hosting`
